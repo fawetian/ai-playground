@@ -34,10 +34,7 @@ async def main():
         prompt="用 Python 写一个快速排序算法，并解释其原理。",
         options=options,
     ):
-        msg_type = type(message).__name__
-
         if isinstance(message, AssistantMessage):
-            # AssistantMessage 包含 content blocks
             for block in message.content:
                 if isinstance(block, TextBlock):
                     print(block.text, end="", flush=True)
@@ -66,8 +63,6 @@ async def main():
         prompt="一句话说明什么是快速排序。",
         options=options_streaming,
     ):
-        msg_type = type(message).__name__
-
         if isinstance(message, AssistantMessage):
             for block in message.content:
                 if isinstance(block, TextBlock):

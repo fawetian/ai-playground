@@ -1,8 +1,8 @@
 """Test if Claude Agent SDK works with current env config."""
 import asyncio
 import os
-from claude_agent_sdk import query
-from claude_agent_sdk.types import ClaudeAgentOptions
+from claude_agent_sdk import query, ClaudeAgentOptions
+from claude_agent_sdk.types import AssistantMessage, ResultMessage, TextBlock
 
 
 async def main():
@@ -29,11 +29,11 @@ async def main():
         options=options,
     ):
         print(f"\n[Message type: {type(message).__name__}]")
-        if hasattr(message, "content"):
+        if isinstance(message, AssistantMessage):
             for block in message.content:
-                if hasattr(block, "text"):
+                if isinstance(block, TextBlock):
                     print(f"  {block.text}")
-        if hasattr(message, "result"):
+        elif isinstance(message, ResultMessage):
             print(f"  result: {message.result}")
 
 

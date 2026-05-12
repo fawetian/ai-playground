@@ -16,15 +16,9 @@ from claude_agent_sdk.types import AssistantMessage, ResultMessage
 
 
 async def main():
-    # query() 返回 AsyncIterator[Message]，需要用 async for 迭代
-    # 它会创建一个临时会话，执行完毕后自动销毁
-    last_result = None
-
     async for message in query(
         prompt="用一句话介绍你自己，然后用 Python 写一个冒泡排序。",
     ):
-        msg_type = type(message).__name__
-
         if isinstance(message, AssistantMessage):
             # AssistantMessage 包含 content 列表，其中有 TextBlock / ToolUseBlock 等
             print("\n=== 内容块 ===")
@@ -36,8 +30,6 @@ async def main():
                     print(f"  thinking: {block.thinking[:200]}...")
 
         elif isinstance(message, ResultMessage):
-            # ResultMessage 包含 session_id 和费用信息
-            last_result = message
             print("\n=== 费用 ===")
             print(f"total_cost_usd: {message.total_cost_usd}")
             print(f"session_id: {message.session_id}")

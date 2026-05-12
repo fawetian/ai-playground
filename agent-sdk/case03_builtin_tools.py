@@ -22,7 +22,7 @@ Case 03: Built-in Tools - 使用内置工具
 
 import asyncio
 from claude_agent_sdk import query, ClaudeAgentOptions
-from claude_agent_sdk.types import AssistantMessage, ResultMessage
+from claude_agent_sdk.types import AssistantMessage, TextBlock, ToolUseBlock, ToolResultBlock
 
 
 async def main():
@@ -39,19 +39,17 @@ async def main():
     ):
         if isinstance(message, AssistantMessage):
             for i, block in enumerate(message.content):
-                block_type = type(block).__name__
-                print(f"\n--- Block {i}: {block_type} ---")
+                print(f"\n--- Block {i}: {type(block).__name__} ---")
 
-                if block_type == "TextBlock":
+                if isinstance(block, TextBlock):
                     print(block.text)
-                elif block_type == "ToolUseBlock":
+                elif isinstance(block, ToolUseBlock):
                     print(f"  Tool: {block.name}")
                     print(f"  Input: {block.input}")
-                elif block_type == "ToolResultBlock":
-                    if hasattr(block, "content"):
-                        for c in block.content:
-                            if hasattr(c, "text"):
-                                print(f"  Result: {c.text[:300]}")
+                elif isinstance(block, ToolResultBlock):
+                    for c in block.content:
+                        if isinstance(c, TextBlock):
+                            print(f"  Result: {c.text[:300]}")
 
 
 if __name__ == "__main__":

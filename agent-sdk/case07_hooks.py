@@ -18,6 +18,7 @@ Hooks 是 Agent SDK 的"中间件"机制：
 
 import asyncio
 from claude_agent_sdk import query, ClaudeAgentOptions, HookMatcher
+from claude_agent_sdk.types import AssistantMessage
 
 
 # ===== PreToolUse 钩子 =====
@@ -76,8 +77,7 @@ async def main():
         prompt="帮我查看当前日期和时间。",
         options=options,
     ):
-        msg_type = type(message).__name__
-        if msg_type == "AssistantMessage":
+        if isinstance(message, AssistantMessage):
             for block in message.content:
                 if hasattr(block, "text"):
                     print(f"\n{block.text}")
@@ -87,8 +87,7 @@ async def main():
         prompt="帮我执行 rm -rf /tmp/test 目录。",
         options=options,
     ):
-        msg_type = type(message).__name__
-        if msg_type == "AssistantMessage":
+        if isinstance(message, AssistantMessage):
             for block in message.content:
                 if hasattr(block, "text"):
                     print(f"\n{block.text}")

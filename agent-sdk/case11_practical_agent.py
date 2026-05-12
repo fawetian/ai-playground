@@ -18,7 +18,7 @@ Case 11: Practical Example - 实战项目助手
 
 import asyncio
 from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions, tool, create_sdk_mcp_server
-from claude_agent_sdk.types import AssistantMessage
+from claude_agent_sdk.types import AssistantMessage, TextBlock
 
 
 # ===== 项目助手工具 =====
@@ -135,7 +135,7 @@ async def main():
             async for message in client.receive_response():
                 if isinstance(message, AssistantMessage):
                     for block in message.content:
-                        if hasattr(block, "text"):
+                        if isinstance(block, TextBlock):
                             print(block.text)
             print()
 

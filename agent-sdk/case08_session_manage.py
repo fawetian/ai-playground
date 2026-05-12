@@ -74,11 +74,10 @@ async def main():
         print(f"消息数: {len(messages)}")
         for msg in messages:
             print(f"  [{msg.type}] ", end="")
-            if hasattr(msg, "message") and hasattr(msg.message, "content"):
-                for block in msg.message.content:
-                    if hasattr(block, "text"):
-                        print(block.text[:80])
-                        break
+            for block in msg.message.content:
+                if hasattr(block, "text"):
+                    print(block.text[:80])
+                    break
 
 
 if __name__ == "__main__":
